@@ -1,8 +1,23 @@
+# Data 
 data/
+*.csv
+
+# Env
 .venv/
 .env
+
+# Python 
 __pycache__/
 *.pyc
+dist/
+build/
+
+# dbt
 target/
 dbt_packages/
+logs/
+.venv_dbt/
+
+# Editor
 .DS_Store
+.vscode/
