@@ -1,4 +1,4 @@
-version 2:
+version: 2
 
 models:
   - name: stg_orders
@@ -61,7 +61,7 @@ models:
   - name: stg_order_reviews
     columns:
      - name: review_id
-       tests: [not_null]
+       tests: [not_null, unique]
 
      - name: order_id
        tests:
