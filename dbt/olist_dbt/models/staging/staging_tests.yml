@@ -2,71 +2,185 @@ version: 2
 
 models:
   - name: stg_orders
+    description: >
+      Cleaned order-level records from the raw orders source.
+      Grain: one row per order_id.
+      This model standardizes order timemstamps and preserves the life core lifecycle of each customer order.
+
     columns:
       - name: order_id
+        description: The unique identifier for each order.
         tests: [not_null, unique]
       - name: customer_id
+        desciption: Identifier for the customer who placed the order.
         tests: [not_null]
+      - name: order_status
+        description: The current status of the order (e.g., delivered, canceled).
+      - name: order_approved_at
+        description: Timestamp when the order was approved.
+      - name: order_delivered_carrier_date
+        description: Timestamp when the order was handed over to the carrier.
+      - name: order_delivered_customer_date
+        description: Timestamp when the order was delivered to the customer.
+      - name: order_estimated_delivery_date
+        description: Timestamp when the order was estimated to be delivered.
 
   - name: stg_customers
+    description: >
+      Cleaned customer-level records from the raw customers source.
+      Grain: one row per customer_id.
+      Contains customer identifiers and location attributes used for downstream joins.
     columns:
       - name: customer_id
+        description: Primary identifier for a customer record.
         tests: [not_null, unique]
       - name: customer_unique_id
+        description: A unique identifier for each customer that can be used to track repeat purchases.
         tests: [not_null]
+      - name: customer_zip_code_prefix
+        description: The zip code prefix of the customer's location.
+      - name: customer_city
+        description: The city of the customer's location.
+      - name: customer_state
+        description: The state of the customer's location.
 
   - name: stg_order_items
+    description: >
+      Cleaned order item records from the raw order_items source.
+      Grain: one row per order_id and order_item_id.
+      Each row represents a single product line within an order.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_item_id
     columns:
       - name: order_id
+        description: Identifier of the parent order.
         tests: 
           - not_null
           - relationships:
               to: ref('stg_orders')
               field: order_id
       - name: product_id
+        description: Identifier of the purchased product.
         tests:
          - not_null
          - relationships:
               to: ref('stg_products')
               field: product_id
       - name: seller_id
+        description: Identifier of the seller fulfilling the order item.
         tests:
           - not_null
           - relationships:
               to: ref('stg_sellers')
               field: seller_id
       - name: order_item_id
+        description: Line number of the item within an order.
         tests: [not_null]
+      - name: shipping_limit_date
+        description: Timestamp by which the item should be shipped.
+      - name: price
+        description: The price of the item excluding freight cost.
+      - name: freight_value
+        description: The freight cost for the item.
 
   - name: stg_products
+    description: >
+      Cleaned product-level records from the raw products source.
+      Grain: one row per product_id.
+      Contains descriptive product attributes and physical measurements.
     columns:
       - name: product_id
+        description: The unique identifier for each product.
         tests: [not_null, unique]
+      - name: product_category_name
+        description: The category name of the product.
+      - name: product_name_length
+        description: The length of the product name.
+      - name: product_description_length
+        description: The length of the product description.
+      - name: product_photos_qty
+        description: The number of photos associated with the product.
+      - name: product_weight_g
+        description: The weight of the product in grams.
+      - name: product_length_cm
+        description: The length of the product in centimeters.
+      - name: product_height_cm
+        description: The height of the product in centimeters.
+      - name: product_width_cm
+        description: The width of the product in centimeters.
     
   - name: stg_sellers
+    description: >
+      Cleaned seller-level records from the raw sellers source.
+      Grain: one row per seller_id.
+      Contains seller identifiers and geographic attributes.
     columns:
       - name: seller_id
+        description: Primary identifier for the seller.
         tests: [not_null, unique]
+      - name: seller_zip_code_prefix
+        description: The zip code prefix of the seller's location.
+      - name: seller_city
+        description: The city of the seller's location.
+      - name: seller_state
+        description: The state of the seller's location.
+
   - name: stg_order_payments
+    description: >
+      Cleaned payment records from the raw order_payments source.
+      Grain: one row per order_id and payment_sequential.
+      Represents each payment attempt or payment split associated with an order.
     columns:
       - name: order_id
+        description: Identifier of the order associated with the payment.
         tests:
           - not_null
           - relationships:
               to: ref('stg_orders')
               field: order_id
       - name: payment_sequential
+        description: Sequence number of the payment within an order.
         tests: [not_null]
+      - name: payment_type
+        description: The method of payment (e.g., credit_card).
+      - name: payment_installments
+        description: The number of installments for the payment.
+      - name: payment_value
+        description: The amount paid in this payment attempt.
   
   - name: stg_order_reviews
+    description: >
+      Cleaned order review records from the raw order_reviews source.
+      Grain: one row per review_id and order_id.
+      Contains customer review scores and comments linked to orders.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - review_id
+            - order_id
     columns:
      - name: review_id
+       description: Review identifier from the source system. Not unique on its own.
        tests: [not_null]
 
      - name: order_id
+       description: Identifier of the order associated with the review.
        tests:
           - not_null
           - relationships:
               to: ref('stg_orders')
               field: order_id
+     - name: review_score
+       description: Numeric customer rating for the order.
+     - name: review_comment_title
+       description: The title of the customer's review comment.
+     - name: review_comment_message
+       description: The body of the customer's review comment.
+     - name: review_creation_date
+       description: The date when the review was created.
+     - name: review_answer_timestamp
+       description: The timestamp when the review received a response.
       
