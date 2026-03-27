@@ -1,18 +1,5 @@
 version: 2
-
 models:
-  - name: dim_customers
-    description: "Customer dimension (1 row per customer_id)"
-    columns:
-     - name: customer_id
-       tests: [not_null, unique]
-
-  - name: dim_products
-    description: "Product dimension (1 row per product_id)"
-    columns:
-      - name: product_id
-        tests: [not_null, unique]
-            
   - name: fct_order_items
     description: "Order item fact(1 row per order_id + product_id + seller_id)"
     columns:
@@ -44,7 +31,7 @@ models:
           - relationships:
               to: ref('dim_customers')
               field: customer_id
-
+              
   - name: fct_orders
     description: "Order grain fact(1 row per order_id)"
     columns:
