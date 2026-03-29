@@ -94,3 +94,47 @@ models:
           combination_of_columns:
             - order_id
             - payment_sequential
+
+  - name: fct_delivery
+    description: Delivery fact table with one row per order_id for SLA and operational analysis.
+    columns:
+      - name: order_id
+        description: Unique order identifier at delivery fact grain.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer associated with the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+
+      - name: order_status
+        description: Current status of the order.
+
+      - name: order_purchase_timestamp
+        description: Timestamp when the order was placed.
+
+      - name: order_delivered_customer_date
+        description: Timestamp when the order was delivered to the customer.
+
+      - name: order_estimated_delivery_date
+        description: Estimated delivery date promised for the order.
+
+      - name: delivery_duration_days
+        description: Number of days between purchase date and customer delivery date.
+
+      - name: delivery_delay_days
+        description: Number of days between actual and estimated delivery date. Positive means late.
+
+      - name: is_delivered
+        description: Boolean flag indicating whether the order status is delivered.
+
+      - name: is_on_time
+        description: Boolean flag indicating whether delivery was on or before the estimated date.
+
+      - name: is_late
+        description: Boolean flag indicating whether delivery happened after the estimated date.
