@@ -58,3 +58,39 @@ models:
           - relationships:
               to: ref('dim_customers')
               field: customer_id
+
+  - name: fct_payments
+    description: Payment fact table with one row per order_id and payment_sequential.
+    columns:
+      - name: order_id
+        description: Order identifier.
+        tests:
+          - not_null
+
+      - name: payment_sequential
+        description: Sequence number of the payment record within an order.
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Customer placing the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+
+      - name: payment_type
+        description: Payment method used for the transaction.
+
+      - name: payment_installments
+        description: Number of installments used for the payment.
+
+      - name: payment_value
+        description: Payment amount recorded for the payment event.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - payment_sequential
