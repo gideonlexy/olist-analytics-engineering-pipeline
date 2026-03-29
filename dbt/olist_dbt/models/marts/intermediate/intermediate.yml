@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: Order-level intermediate model with one row per order_id combining order, payment, item, and delivery context.
+    columns:
+      - name: order_id
+        description: Unique order identifier.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer associated with the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+
+      - name: order_status
+        description: Status of the order from the source order registry.
+
+      - name: gross_order_revenue
+        description: Total item-level gross revenue for the order.
+
+      - name: total_items
+        description: Total number of item rows in the order.
+
+      - name: total_payment_value
+        description: Total payment amount recorded for the order.
+
+      - name: payment_record_count
+        description: Number of payment records associated with the order.
+
+      - name: is_delivered
+        description: Boolean flag indicating whether the order was delivered.
+
+      - name: is_on_time
+        description: Boolean flag indicating whether the order was delivered on time.
+
+      - name: is_late
+        description: Boolean flag indicating whether the order was delivered late.
