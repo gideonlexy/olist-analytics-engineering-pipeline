@@ -1,7 +1,7 @@
 version: 2
 models:
   - name: fct_order_items
-    description: "Order item fact(1 row per order_id + product_id + seller_id)"
+    description: "Order item fact(1 row per order_id + order_item_id)"
     columns:
       - name: order_id
         description: Order identifier.
