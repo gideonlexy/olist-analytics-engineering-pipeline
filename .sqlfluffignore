@@ -1,0 +1,4 @@
+dbt/olist_dbt/target/
+dbt/olist_dbt/dbt_packages/
+dbt/logs/
+logs/
