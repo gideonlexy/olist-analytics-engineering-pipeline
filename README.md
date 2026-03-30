@@ -9,15 +9,15 @@ The goal of this project is to replicate how analytics pipelines are built in pr
 
 ## Architecture (High Level)
 Raw CSV Files
-     ↓
-Python Ingestion Scripts
-     ↓
-PostgreSQL (raw schema)
-     ↓
-dbt Transformations (staging → marts)
-     ↓
-Analytics Tables (facts & dimensions)
-     ↓
+     
+Python Ingestion Scripts ->
+     
+PostgreSQL (raw schema) ->
+     
+dbt Transformations (staging -> marts) ->
+     
+Analytics Tables (facts & dimensions) ->
+     
 Tableau Dashboards
 
 
@@ -81,5 +81,39 @@ Start the database:
 
 ```bash
 docker compose up -d
+```
 
+## SQL Linting And Formatting
+
+This repo uses `sqlfluff` for dbt-aware SQL linting and formatting.
+
+What it enforces:
+- PostgreSQL dialect rules
+- dbt templating support for models in `dbt/olist_dbt`
+- Uppercase SQL keywords, functions, literals, and types
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Lint dbt SQL models:
+
+```bash
+sqlfluff lint dbt/olist_dbt/models --config .sqlfluff
+```
+
+Auto-fix fixable issues:
+
+```bash
+sqlfluff fix dbt/olist_dbt/models --config .sqlfluff
+```
+
+Enable enforcement before each commit:
+
+```bash
+pre-commit install
+pre-commit run --all-files
+```
 

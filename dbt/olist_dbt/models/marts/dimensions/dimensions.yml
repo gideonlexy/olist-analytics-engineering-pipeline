@@ -64,13 +64,13 @@ models:
         tests: [not_null, unique]
       - name: date_year
         description: Calendar year.
-      - name: quarter
+      - name: date_quarter
         description: Quarter of the year (1-4).
-      - name: month
+      - name: month_of_year
         description: Month component of the date (1-12).
       - name: month_name
         description: Full month name (e.g., January, February).
-      - name: year_month
+      - name: calendar_year_month
         description: Concatenated year and month in YYYY-MM format for easy grouping.
       - name: week_of_year
         description: Week number of the year (1-53).

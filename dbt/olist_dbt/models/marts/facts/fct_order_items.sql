@@ -15,12 +15,12 @@ SELECT
 
     oi.shipping_limit_date,
 
-    oi.price AS item_price ,
-    oi.freight_value AS freight_value,
-    (oi.price + oi.freight_value)::NUMERIC(12,2) AS gross_item_value,
+    oi.price AS item_price,
+    oi.freight_value,
+    (oi.price + oi.freight_value)::NUMERIC(12, 2) AS gross_item_value,
 
     1 AS item_quantity
-    
-FROM {{ ref('stg_order_items') }} oi
-JOIN {{ ref('stg_orders') }} o
+
+FROM {{ ref('stg_order_items') }} AS oi
+INNER JOIN {{ ref('stg_orders') }} AS o
     ON oi.order_id = o.order_id

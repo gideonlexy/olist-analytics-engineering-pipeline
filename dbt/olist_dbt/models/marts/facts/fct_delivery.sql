@@ -1,4 +1,3 @@
-
 SELECT
     o.order_id,
     o.customer_id,
@@ -14,43 +13,39 @@ SELECT
 
 
     -- Delivery performance metrics
-    CASE 
-        WHEN o.order_delivered_customer_date IS NOT NULL 
-        AND o.order_purchase_timestamp IS NOT NULL THEN
-        (o.order_delivered_customer_date::date - o.order_purchase_timestamp::date) 
-        ELSE NULL
+    CASE
+        WHEN
+            o.order_delivered_customer_date IS NOT NULL
+            AND o.order_purchase_timestamp IS NOT NULL
+            THEN
+                (o.order_delivered_customer_date::DATE - o.order_purchase_timestamp::DATE)
     END AS delivery_duration_days,
 
-    CASE 
-        WHEN o.order_delivered_customer_date IS NOT NULL 
-        AND o.order_estimated_delivery_date IS NOT NULL THEN
-        (o.order_delivered_customer_date::date - o.order_estimated_delivery_date::date) 
-        ELSE NULL
+    CASE
+        WHEN
+            o.order_delivered_customer_date IS NOT NULL
+            AND o.order_estimated_delivery_date IS NOT NULL
+            THEN
+                (o.order_delivered_customer_date::DATE - o.order_estimated_delivery_date::DATE)
     END AS delivery_delay_days,
 
-    CASE 
-        WHEN o.order_status = 'delivered' THEN 
-        TRUE
-        ELSE FALSE
-    END AS is_delivered,
+    COALESCE(o.order_status = 'delivered', FALSE) AS is_delivered,
 
-    CASE 
-        WHEN o.order_delivered_customer_date IS NOT NULL
+    COALESCE(
+        o.order_delivered_customer_date IS NOT NULL
         AND o.order_estimated_delivery_date IS NOT NULL
-        AND (o.order_delivered_customer_date::date <= o.order_estimated_delivery_date::date) THEN
-        TRUE
-        ELSE FALSE
-    END AS is_on_time,
+        AND (o.order_delivered_customer_date::DATE <= o.order_estimated_delivery_date::DATE),
+        FALSE
+    ) AS is_on_time,
 
-    CASE 
-        WHEN o.order_delivered_customer_date IS NOT NULL
-        AND o.order_estimated_delivery_date IS NOT NULL 
-        AND (o.order_delivered_customer_date::date > o.order_estimated_delivery_date::date) THEN
-        TRUE
-        ELSE FALSE
-    END AS is_late
+    COALESCE(
+        o.order_delivered_customer_date IS NOT NULL
+        AND o.order_estimated_delivery_date IS NOT NULL
+        AND (o.order_delivered_customer_date::DATE > o.order_estimated_delivery_date::DATE),
+        FALSE
+    ) AS is_late
 
 
-FROM {{ ref('stg_orders') }} o
-LEFT  JOIN {{ ref('dim_customers') }} c
+FROM {{ ref('stg_orders') }} AS o
+LEFT JOIN {{ ref('dim_customers') }} AS c
     ON o.customer_id = c.customer_id
