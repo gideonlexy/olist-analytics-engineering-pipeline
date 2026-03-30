@@ -10,6 +10,6 @@ SELECT
     o.order_purchase_timestamp
 
 
-FROM {{ ref('stg_order_payments') }} p
-LEFT JOIN {{ ref('stg_orders')}} o
+FROM {{ ref('stg_order_payments') }} AS p
+LEFT JOIN {{ ref('stg_orders')}} AS o
     ON p.order_id = o.order_id

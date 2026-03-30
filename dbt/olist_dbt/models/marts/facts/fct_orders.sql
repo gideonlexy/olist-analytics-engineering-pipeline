@@ -32,7 +32,7 @@ payment_agg AS (
 reviews_agg AS (
     SELECT
         order_id,
-        AVG(review_score)::NUMERIC(10,2) AS avg_review_score,
+        AVG(review_score)::NUMERIC(10, 2) AS avg_review_score,
         COUNT(*) AS review_count
     FROM {{ ref('stg_order_reviews') }}
     GROUP BY order_id
@@ -56,7 +56,7 @@ SELECT
 
     r.avg_review_score,
     r.review_count
-FROM orders o
-LEFT JOIN order_items_agg oi using (order_id)
-LEFT JOIN payment_agg p using (order_id)
-LEFT JOIN reviews_agg r using (order_id)
+FROM orders AS o
+LEFT JOIN order_items_agg AS oi ON o.order_id = oi.order_id
+LEFT JOIN payment_agg AS p ON o.order_id = p.order_id
+LEFT JOIN reviews_agg AS r ON o.order_id = r.order_id

@@ -8,22 +8,19 @@ WITH date_spine AS (
 )
 
 SELECT
-    CAST(date_day AS date) AS date_day,
+    CAST(date_day AS DATE) AS date_day,
     EXTRACT(YEAR FROM date_day) AS date_year,
-    EXTRACT(QUARTER FROM date_day) AS quarter,
-    EXTRACT(MONTH FROM date_day) AS month,
+    EXTRACT(QUARTER FROM date_day) AS date_quarter,
+    EXTRACT(MONTH FROM date_day) AS month_of_year,
     TRIM(TO_CHAR(date_day, 'Month')) AS month_name,
-    TO_CHAR(date_day, 'YYYY-MM') AS year_month,
+    TO_CHAR(date_day, 'YYYY-MM') AS calendar_year_month,
     EXTRACT(WEEK FROM date_day) AS week_of_year,
     EXTRACT(ISODOW FROM date_day) AS iso_day_of_week,
     TRIM(TO_CHAR(date_day, 'Day')) AS day_name,
-    CASE
-        WHEN EXTRACT(ISODOW FROM date_day) IN (6,7) THEN TRUE
-        ELSE FALSE
-    END AS is_weekend,
-    DATE_TRUNC('month', date_day)::DATE AS month_start_date,
-    DATE_TRUNC('quarter', date_day)::DATE AS quarter_start_date,
-    DATE_TRUNC('year', date_day)::DATE AS year_start_date,
-    DATE_TRUNC('week', date_day)::DATE AS week_start_date
+    COALESCE(EXTRACT(ISODOW FROM date_day) IN (6, 7), FALSE) AS is_weekend,
+    CAST(DATE_TRUNC('month', date_day) AS DATE) AS month_start_date,
+    CAST(DATE_TRUNC('quarter', date_day) AS DATE) AS quarter_start_date,
+    CAST(DATE_TRUNC('year', date_day) AS DATE) AS year_start_date,
+    CAST(DATE_TRUNC('week', date_day) AS DATE) AS week_start_date
 
 FROM date_spine

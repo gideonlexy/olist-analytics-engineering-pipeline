@@ -1,6 +1,5 @@
-
 WITH orders AS (
-    SELECT 
+    SELECT
         order_id,
         customer_id,
         order_status,
@@ -64,10 +63,10 @@ SELECT
     d.is_on_time,
     d.is_late
 
-FROM orders o
-LEFT JOIN rollup_items oi
-    on o.order_id = oi.order_id
-LEFT JOIN rollup_payments p
-    on o.order_id = p.order_id
-LEFT JOIN delivery d
-    on o.order_id = d.order_id
+FROM orders AS o
+LEFT JOIN rollup_items AS oi
+    ON o.order_id = oi.order_id
+LEFT JOIN rollup_payments AS p
+    ON o.order_id = p.order_id
+LEFT JOIN delivery AS d
+    ON o.order_id = d.order_id
