@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: mrt_revenue_daily
+    description: Daily revenue mart for delivered orders, including order count and average order value.
+    columns:
+      - name: order_date
+        description: Calendar date of order purchase.
+        tests:
+          - not_null
+          - unique
+
+      - name: delivered_orders
+        description: Number of delivered orders placed on the day.
+        tests:
+          - not_null
+
+      - name: daily_revenue
+        description: Total realized gross revenue for delivered orders on the day.
+
+      - name: average_order_value
+        description: Average gross order revenue for delivered orders on the day.
+
+      - name: total_items
+        description: Total delivered item count for the day.
