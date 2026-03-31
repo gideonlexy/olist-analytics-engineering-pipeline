@@ -146,3 +146,49 @@ models:
           combination_of_columns:
             - seller_id
             - order_month
+
+  - name: mrt_category_performance
+    description: Monthly category performance mart combining revenue, volume, delivery, and review metrics.
+    columns:
+      - name: product_category_name_english
+        description: English-translated product category.
+        tests:
+          - not_null
+
+      - name: order_month
+        description: Month of order purchase.
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Number of distinct orders containing the category.
+
+      - name: total_items_sold
+        description: Total items sold for the category.
+
+      - name: total_revenue
+        description: Total category revenue.
+
+      - name: delivered_orders
+        description: Number of delivered orders containing the category.
+
+      - name: on_time_orders
+        description: Number of on-time delivered orders containing the category.
+
+      - name: on_time_rate
+        description: Share of delivered category orders that were on time.
+
+      - name: avg_delivery_duration_days
+        description: Average delivery duration for orders containing the category.
+
+      - name: avg_delivery_delay_days
+        description: Average delivery delay for orders containing the category.
+
+      - name: avg_review_score
+        description: Average order-level review score for orders containing the category.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_category_name_english
+            - order_month
