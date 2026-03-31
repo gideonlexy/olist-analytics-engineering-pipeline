@@ -39,6 +39,15 @@ delivery AS (
         is_on_time,
         is_late
     FROM {{ ref('fct_delivery') }}
+),
+
+review AS (
+    SELECT
+        order_id,
+        AVG(review_score)::NUMERIC(10, 2) AS avg_review_score,
+        COUNT(*) AS review_count
+    FROM {{ ref('stg_order_reviews') }}
+    GROUP BY 1
 )
 
 SELECT
@@ -61,7 +70,10 @@ SELECT
     d.delivery_delay_days,
     d.is_delivered,
     d.is_on_time,
-    d.is_late
+    d.is_late,
+
+    r.avg_review_score,
+    r.review_count
 
 FROM orders AS o
 LEFT JOIN rollup_items AS oi
@@ -70,3 +82,5 @@ LEFT JOIN rollup_payments AS p
     ON o.order_id = p.order_id
 LEFT JOIN delivery AS d
     ON o.order_id = d.order_id
+LEFT JOIN review AS r
+    ON o.order_id = r.order_id

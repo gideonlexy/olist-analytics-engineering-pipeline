@@ -41,6 +41,11 @@ models:
 
       - name: is_late
         description: Boolean flag indicating whether the order was delivered late.
+      
+      - name: avg_review_score
+        description: Average review score for the order based on customer reviews.
+      - name: review_count
+        description: Number of reviews associated with the order.
   
   - name: int_customer_orders
     description: Customer order sequencing model based on delivered orders only.
