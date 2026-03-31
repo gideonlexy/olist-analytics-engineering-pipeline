@@ -120,3 +120,40 @@ models:
           combination_of_columns:
             - seller_id
             - order_id
+
+  - name: int_category_orders
+    description: Category-order intermediate model with one row per product category and order_id.
+    columns:
+      - name: product_category_name_english
+        description: English-translated product category.
+        tests:
+          - not_null
+
+      - name: order_id
+        description: Order identifier.
+        tests:
+          - not_null
+
+      - name: order_month
+        description: Month of order purchase.
+
+      - name: category_order_revenue
+        description: Total category-attributed revenue within the order.
+
+      - name: category_order_items
+        description: Total category-attributed item count within the order.
+
+      - name: is_delivered
+        description: Whether the order was delivered.
+
+      - name: is_on_time
+        description: Whether the order was delivered on time.
+
+      - name: avg_review_score
+        description: Average review score recorded at the order level.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_category_name_english
+            - order_id
