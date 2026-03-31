@@ -9,8 +9,8 @@ SELECT
     p.product_height_cm,
     p.product_width_cm,
     COALESCE(
-        t.product_category_name_english, p.product_category_name
+        t.product_category_name_english, p.product_category_name, 'uncategorized'
     ) AS product_category_name_english
-FROM {{ref('stg_products')}} AS p
-LEFT JOIN {{ref('stg_category_name_translation')}} AS t
+FROM {{ ref('stg_products') }} AS p
+LEFT JOIN {{ ref('stg_category_name_translation') }} AS t
     ON p.product_category_name = t.product_category_name
