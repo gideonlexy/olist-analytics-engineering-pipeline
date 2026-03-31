@@ -65,3 +65,41 @@ models:
           combination_of_columns:
             - cohort_month
             - order_month
+
+  - name: mrt_delivery_sla
+    description: Monthly delivery SLA mart by customer state.
+    columns:
+      - name: delivery_month
+        description: Month when the order was delivered.
+        tests:
+          - not_null
+
+      - name: customer_state
+        description: Customer state for the delivered order.
+        tests:
+          - not_null
+
+      - name: delivered_orders
+        description: Number of delivered orders in the month and state.
+        tests:
+          - not_null
+
+      - name: on_time_orders
+        description: Number of delivered orders that were on time.
+
+      - name: late_orders
+        description: Number of delivered orders delivered after the estimated date.
+
+      - name: on_time_rate
+        description: Share of delivered orders that were on time.
+
+      - name: avg_delivery_duration_days
+        description: Average days from purchase to delivery.
+
+      - name: avg_delivery_delay_days
+        description: Average days between estimated and actual delivery.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - delivery_month
+            - customer_state
