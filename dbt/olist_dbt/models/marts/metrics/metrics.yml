@@ -103,3 +103,46 @@ models:
           combination_of_columns:
             - delivery_month
             - customer_state
+
+  - name: mrt_seller_scorecard
+    description: Monthly seller performance mart combining revenue, volume, and delivery metrics.
+    columns:
+      - name: seller_id
+        description: Seller identifier.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_sellers')
+              field: seller_id
+
+      - name: order_month
+        description: Month of order purchase.
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Number of distinct orders involving the seller.
+
+      - name: total_items_sold
+        description: Total items sold by the seller.
+
+      - name: total_revenue
+        description: Total seller revenue for the month.
+
+      - name: delivered_orders
+        description: Number of delivered orders involving the seller.
+
+      - name: on_time_orders
+        description: Number of seller-involved orders delivered on time.
+
+      - name: late_orders
+        description: Number of seller-involved orders delivered late.
+
+      - name: on_time_rate
+        description: Share of delivered seller-involved orders delivered on time.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - seller_id
+            - order_month
