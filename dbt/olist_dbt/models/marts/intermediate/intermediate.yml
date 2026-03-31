@@ -41,3 +41,37 @@ models:
 
       - name: is_late
         description: Boolean flag indicating whether the order was delivered late.
+  
+  - name: int_customer_orders
+    description: Customer order sequencing model based on delivered orders only.
+    columns:
+      - name: order_id
+        description: Unique order identifier.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer associated with the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+
+      - name: order_date
+        description: Delivered order purchase date.
+
+      - name: order_month
+        description: Month of the delivered order.
+
+      - name: customer_order_number
+        description: Sequential order number for the customer.
+
+      - name: cohort_month
+        description: Month of the customer's first delivered order.
+
+      - name: months_since_first_order
+        description: Number of months elapsed since first delivered order.
+      - name: next_order_date
+        description: Purchase date of the customer's next delivered order.
