@@ -75,3 +75,43 @@ models:
         description: Number of months elapsed since first delivered order.
       - name: next_order_date
         description: Purchase date of the customer's next delivered order.
+  
+  - name: int_seller_orders
+    description: Seller-order intermediate model with one row per seller_id and order_id.
+    columns:
+      - name: seller_id
+        description: Seller participating in the order.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_sellers')
+              field: seller_id
+
+      - name: order_id
+        description: Order identifier.
+        tests:
+          - not_null
+
+      - name: order_month
+        description: Month of order purchase.
+
+      - name: seller_order_revenue
+        description: Total gross revenue for the seller within the order.
+
+      - name: seller_order_items
+        description: Total item quantity sold by the seller within the order.
+
+      - name: is_delivered
+        description: Whether the order was delivered.
+
+      - name: is_on_time
+        description: Whether the order was delivered on time.
+
+      - name: is_late
+        description: Whether the order was delivered late.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - seller_id
+            - order_id
