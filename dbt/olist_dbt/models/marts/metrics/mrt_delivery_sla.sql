@@ -11,6 +11,9 @@ SELECT
         / NULLIF(COUNT(DISTINCT order_id), 0),
         4
     ) AS on_time_rate,
+    COUNT(DISTINCT CASE WHEN is_late = TRUE THEN order_id END)::NUMERIC
+    /
+    NULLIF(COUNT(DISTINCT order_id), 0) AS late_rate,
 
     AVG(delivery_duration_days) AS avg_delivery_duration_days,
     AVG(delivery_delay_days) AS avg_delivery_delay_days
