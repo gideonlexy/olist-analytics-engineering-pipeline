@@ -48,11 +48,22 @@ review AS (
         COUNT(*) AS review_count
     FROM {{ ref('stg_order_reviews') }}
     GROUP BY 1
+),
+
+seller_rollup AS (
+    SELECT
+        order_id,
+        COUNT(DISTINCT seller_id) AS seller_count,
+        MIN(seller_id) AS primary_seller_id
+    FROM {{ ref('fct_order_items') }}
+    GROUP BY 1
 )
 
 SELECT
     o.order_id,
     o.customer_id,
+    c.customer_state,
+    s.primary_seller_id AS seller_id,
     o.order_status,
     o.order_purchase_timestamp,
     o.order_approved_at,
@@ -84,3 +95,7 @@ LEFT JOIN delivery AS d
     ON o.order_id = d.order_id
 LEFT JOIN review AS r
     ON o.order_id = r.order_id
+LEFT JOIN {{ ref('dim_customers') }} AS c
+    ON o.customer_id = c.customer_id
+LEFT JOIN seller_rollup AS s
+    ON o.order_id = s.order_id
