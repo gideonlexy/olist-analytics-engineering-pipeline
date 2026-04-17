@@ -192,3 +192,40 @@ models:
           combination_of_columns:
             - product_category_name_english
             - order_month
+
+
+  - name: mrt_customer_behavior
+    description: "Cohort-level customer behavior metrics based on customer_unique_id."
+
+    columns:
+      - name: cohort_month
+        description: "Month of first purchase for the cohort."
+        tests:
+          - not_null
+          - unique
+
+      - name: total_customers
+        description: "Total customers in the cohort."
+        tests:
+          - not_null
+
+      - name: repeat_customers
+        description: "Customers in the cohort with more than one order."
+        tests:
+          - not_null
+
+      - name: repeat_rate
+        description: "Repeat customers divided by total customers."
+        tests:
+          - not_null
+
+      - name: avg_orders_per_customer
+        description: "Average number of orders per customer in the cohort."
+        tests:
+          - not_null
+
+      - name: avg_days_to_second_order
+        description: "Average days to second order among customers who repeated."
+
+      - name: median_days_to_second_order
+        description: "Median days to second order among customers who repeated."
