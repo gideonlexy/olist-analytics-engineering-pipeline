@@ -12,6 +12,7 @@ WITH orders AS (
 
 ),
 
+
 rollup_items AS (
     SELECT
         order_id,
@@ -62,6 +63,7 @@ seller_rollup AS (
 SELECT
     o.order_id,
     o.customer_id,
+    c.customer_unique_id,
     c.customer_state,
     s.primary_seller_id AS seller_id,
     o.order_status,
