@@ -29,6 +29,13 @@ SELECT
                 (o.order_delivered_customer_date::DATE - o.order_estimated_delivery_date::DATE)
     END AS delivery_delay_days,
 
+    CASE
+        WHEN
+            o.order_estimated_delivery_date IS NOT NULL AND o.order_purchase_timestamp IS NOT NULL
+            THEN
+                (o.order_estimated_delivery_date::DATE - o.order_purchase_timestamp::DATE)
+    END AS estimated_delivery_duration_days,
+
     COALESCE(o.order_status = 'delivered', FALSE) AS is_delivered,
 
     COALESCE(
