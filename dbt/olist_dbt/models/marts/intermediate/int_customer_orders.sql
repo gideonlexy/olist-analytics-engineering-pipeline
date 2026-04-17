@@ -3,6 +3,7 @@ WITH valid_orders AS (
     SELECT
         order_id,
         customer_id,
+        customer_unique_id,
         CAST(order_purchase_timestamp AS DATE) AS order_date,
         CAST(DATE_TRUNC('month', order_purchase_timestamp) AS DATE) AS order_month
     FROM {{ ref('int_orders_enriched') }}
@@ -17,24 +18,25 @@ sequenced AS (
     SELECT
         order_id,
         customer_id,
+        customer_unique_id,
         order_date,
         order_month,
 
         ROW_NUMBER() OVER (
-            PARTITION BY customer_id
+            PARTITION BY customer_unique_id
             ORDER BY order_date, order_id
         ) AS customer_order_number,
 
         MIN(order_date) OVER (
-            PARTITION BY customer_id
+            PARTITION BY customer_unique_id
         ) AS first_order_date,
 
         MIN(order_month) OVER (
-            PARTITION BY customer_id
+            PARTITION BY customer_unique_id
         ) AS cohort_month,
 
         LEAD(order_date) OVER (
-            PARTITION BY customer_id
+            PARTITION BY customer_unique_id
             ORDER BY order_date, order_id
         ) AS next_order_date
 
@@ -45,6 +47,7 @@ sequenced AS (
 SELECT
     order_id,
     customer_id,
+    customer_unique_id,
     order_date,
     order_month,
     customer_order_number,
