@@ -116,4 +116,10 @@ Enable enforcement before each commit:
 pre-commit install
 pre-commit run --all-files
 ```
+## Dashboards Screenshots
+![Executive Dashboard](/dashboards/executive-dashboard.png)
+![Delivery Dashboard](/dashboards/delivery-dashboard.png)
 
+## Live Dashboard
+[Executive Dashboard](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_executive_dashbaord/executive-dashboard)
+[Delivery Analysis](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_delivery_analysis/delivery-dashboard)
