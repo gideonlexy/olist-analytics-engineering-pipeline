@@ -21,7 +21,8 @@ SELECT
         CASE
             WHEN is_late = TRUE THEN delivery_delay_days
         END
-    ) AS avg_late_delay_days
+    ) AS avg_late_delay_days,
+    AVG(estimated_delivery_duration_days) AS avg_estimated_delivery_duration_days
 
 FROM {{ ref('fct_delivery') }}
 WHERE
