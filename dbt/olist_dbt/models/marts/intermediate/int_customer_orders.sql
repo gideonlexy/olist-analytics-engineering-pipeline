@@ -4,6 +4,7 @@ WITH valid_orders AS (
         order_id,
         customer_id,
         customer_unique_id,
+        gross_order_revenue,
         CAST(order_purchase_timestamp AS DATE) AS order_date,
         CAST(DATE_TRUNC('month', order_purchase_timestamp) AS DATE) AS order_month
     FROM {{ ref('int_orders_enriched') }}
@@ -19,6 +20,7 @@ sequenced AS (
         order_id,
         customer_id,
         customer_unique_id,
+        gross_order_revenue,
         order_date,
         order_month,
 
@@ -48,6 +50,7 @@ SELECT
     order_id,
     customer_id,
     customer_unique_id,
+    gross_order_revenue,
     order_date,
     order_month,
     customer_order_number,
