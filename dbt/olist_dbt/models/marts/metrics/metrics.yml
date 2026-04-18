@@ -229,3 +229,23 @@ models:
 
       - name: median_days_to_second_order
         description: "Median days to second order among customers who repeated."
+
+  - name: mrt_customer_behavior_segments
+    description: "Cohort-level customer behavior distributions by reorder bucket and customer segment."
+
+    columns:
+      - name: cohort_month
+        tests:
+          - not_null
+
+      - name: reorder_bucket
+        tests:
+          - not_null
+
+      - name: customer_segment
+        tests:
+          - not_null
+
+      - name: customers
+        tests:
+          - not_null
