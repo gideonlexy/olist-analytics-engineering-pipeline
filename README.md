@@ -117,8 +117,8 @@ pre-commit install
 pre-commit run --all-files
 ```
 ## Dashboards Screenshots
-Executive Dashboard: ![Executive Dashboard](/dashboards/executive-dashboard.png)
-Delivery Analysis Dashboard: ![Delivery Dashboard](/dashboards/delivery-dashboard.png)
+Executive Dashboard: ![Executive Dashboard](dashboards/executive-dashboard.png)
+Delivery Analysis Dashboard: ![Delivery Dashboard](dashboards/delivery-dashboard.png)
 
 ## Live Dashboard
 Executive Dashboard: [Executive Dashboard](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_executive_dashbaord/executive-dashboard)
@@ -140,4 +140,3 @@ Delivery Analysis Dashboard:  [Delivery Analysis](https://public.tableau.com/app
 ### Customer Experience
 - Delivery delays have weak correlation with review scores.
 - Customer satisfaction remains high (4+ average rating) despite delivery variability.
-
