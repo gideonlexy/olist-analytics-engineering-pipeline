@@ -116,4 +116,27 @@ Enable enforcement before each commit:
 pre-commit install
 pre-commit run --all-files
 ```
+## Dashboards Screenshots
+Executive Dashboard: ![Executive Dashboard](dashboards/executive-dashboard.png)
+Delivery Analysis Dashboard: ![Delivery Dashboard](dashboards/delivery-dashboard.png)
 
+## Live Dashboard
+Executive Dashboard: [Executive Dashboard](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_executive_dashbaord/executive-dashboard)
+Delivery Analysis Dashboard:  [Delivery Analysis](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_delivery_analysis/delivery-dashboard)
+
+## Key Insights
+
+### Revenue & Business Performance
+- Revenue shows a steady upward trend with occasional spikes.
+- Average Order Value (AOV) is stable ($160).
+- Revenue is concentrated in a few top-performing product categories.
+- Seller revenue distribution is highly skewed toward top sellers.
+
+### Delivery & Operations
+- Olist systematically overestimates delivery time (14 day median gap), ensuring a high on-time rate (90%).
+- Early deliveries are common, with orders arriving 12 days earlier on average.
+- Delay rates vary by state, but high delay volume is primarily driven by order volume, not poor performance.
+
+### Customer Experience
+- Delivery delays have weak correlation with review scores.
+- Customer satisfaction remains high (4+ average rating) despite delivery variability.
