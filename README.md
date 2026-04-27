@@ -10,13 +10,13 @@ The goal of this project is to replicate how analytics pipelines are built in pr
 ## Architecture (High Level)
 Raw CSV Files
      
-Python Ingestion Scripts ->
+Python Ingestion Scripts 
      
-PostgreSQL (raw schema) ->
+PostgreSQL (raw schema) 
      
-dbt Transformations (staging -> marts) ->
+dbt Transformations (staging -> marts) 
      
-Analytics Tables (facts & dimensions) ->
+Analytics Tables (facts & dimensions) 
      
 Tableau Dashboards
 
@@ -83,46 +83,17 @@ Start the database:
 docker compose up -d
 ```
 
-## SQL Linting And Formatting
-
-This repo uses `sqlfluff` for dbt-aware SQL linting and formatting.
-
-What it enforces:
-- PostgreSQL dialect rules
-- dbt templating support for models in `dbt/olist_dbt`
-- Uppercase SQL keywords, functions, literals, and types
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Lint dbt SQL models:
-
-```bash
-sqlfluff lint dbt/olist_dbt/models --config .sqlfluff
-```
-
-Auto-fix fixable issues:
-
-```bash
-sqlfluff fix dbt/olist_dbt/models --config .sqlfluff
-```
-
-Enable enforcement before each commit:
-
-```bash
-pre-commit install
-pre-commit run --all-files
-```
 ## Dashboards Screenshots
-Executive Dashboard: ![Executive Dashboard](dashboards/executive-dashboard.png)
-Delivery Analysis Dashboard: ![Delivery Dashboard](dashboards/delivery-dashboard.png)
+- **Executive Dashboard:** ![Executive Dashboard](dashboards/executive-dashboard.png)
+- **Delivery Analysis Dashboard:** ![Delivery Dashboard](dashboards/delivery-dashboard.png)
+- **Customer Retention Analysis Dashboard:** ![Customer Analysis Dashboard](dashboards/customer_retention_dashboard.png)
 
-## Live Dashboard
-Executive Dashboard: [Executive Dashboard](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_executive_dashbaord/executive-dashboard)
-Delivery Analysis Dashboard:  [Delivery Analysis](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_delivery_analysis/delivery-dashboard)
+## Live Dashboards
+- **Executive Dashboard:** [Executive Dashboard](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_executive_dashbaord/executive-dashboard)
+
+- **Delivery Analysis Dashboard:**  [Delivery Analysis](https://public.tableau.com/app/profile/gideon.kipkorir/viz/Olist_delivery_analysis/delivery-dashboard)
+
+- **Customer Retention Analysis Dashboard:**  [Customer Retention Analysis](https://public.tableau.com/app/profile/gideon.kipkorir/viz/olist-customer-behavior-dashboard/CustomerRetentionDiagnosisDashboard)
 
 ## Key Insights
 
@@ -140,3 +111,17 @@ Delivery Analysis Dashboard:  [Delivery Analysis](https://public.tableau.com/app
 ### Customer Experience
 - Delivery delays have weak correlation with review scores.
 - Customer satisfaction remains high (4+ average rating) despite delivery variability.
+
+### Customer Retention Insights
+- Repeat rate is ~3%, indicating extremely low customer return behavior
+- Average orders per customer is 1.08, confirming most customers purchase only once 97–99% of monthly
+  activity is driven by new customers, with returning customers contributing minimally
+- Cohort analysis shows immediate drop-off after first purchase, with no cohort demonstrating  sustained retention
+- Retention trends decline over time (~3% to ~1%), showing no improvement as the business grows
+- Median time to second purchase is 59 days, indicating slow re-engagement even among repeat customers
+
+### Customer Retention Diagnosis
+- The business operates on a pure acquisition model, not retention-driven growth
+- Customer lifetime value is low, as revenue is primarily generated from first-time purchases
+- There is no evidence of habit formation or repeat purchasing behavior
+- Growth is dependent on continuously acquiring new customers, making it structurally fragile
