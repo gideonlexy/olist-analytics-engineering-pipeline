@@ -21,3 +21,4 @@ logs/
 # Editor
 .DS_Store
 .vscode/
+airflow/dbt_profiles/.user.yml
